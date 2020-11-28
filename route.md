@@ -33,3 +33,48 @@
       // 接受所有方法, 經由路由'/'
     });
     
+## 路由參數
+
+  - students/學號
+  - students/學號/score/
+  - students/學號/score/科目
+    
+可以分別由以下方式設定:
+
+    Route::get('students/{sno}', function($sno) {
+        return '學號:'. $no;
+    });
+    
+    Route::get('students/{sno}/score', function($sno) {
+        return '學號:'. $no . '的所有成績';
+    });
+    
+    Route::get('students/{sno}/score/{subj}', function($sno, $subj) {
+        return '學號:'. $no . '的'. $subj . '成績';
+    });
+    
+參數可加入預設值:
+
+  1. 加上問號?表示參數可有可無
+  
+  - students/[學號]/score/[科目?]
+
+  2. 使用 is_null 判斷參數是否存在
+
+    Route::get('students/{sno}/score/{subj?}', 
+        function($sno, $subj=null) {
+            return '學號:'. $no . '的'. ((is_null($subj) ? '所有科目' : $subj) . '成績';
+        }
+    );
+    
+## 路由群組
+
+## 路由命名
+
+## 查看路由表
+
+    php artisan route:list
+    
+可簡寫為:
+
+    php artisan r:l
