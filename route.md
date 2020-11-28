@@ -61,12 +61,44 @@
 
   2. 使用 is_null 判斷參數是否存在
 
-    Route::get('students/{sno}/score/{subj?}', 
+    Route::get('students/{sno}/score/{subj?}',
         function($sno, $subj=null) {
             return '學號:'. $no . '的'. ((is_null($subj) ? '所有科目' : $subj) . '成績';
         }
     );
     
+參數可以使用正規表達式(Regular Expression):
+
+  - 學號以大寫 S 開頭及10個數字組成
+  - 科目有 chinese, english, math 三個科目
+
+使用 where 設定規則式:
+
+    Route::get('students/{sno}', function($sno) {
+            return '學號:'. $no;
+    }) -> where(['sno' => 'S[0-9]{10}']);
+   
+    Route::get('students/{sno}/score/{subj?}',
+        function($sno, $subj=null) {
+            return '學號:'. $no . '的'. ((is_null($subj) ? '所有科目' : $subj) . '成績';
+        }
+    ) -> where(['sno' => 'S[0-9]{10}','subj'=>'(chinese|english|math)']);
+
+參數可以用 Route 的 pattern 設定統一格式:
+
+    Route::pattern('sno', 'S[0-9]{10}');
+    Route::pattern('subj', '(chinese|english|math)');
+    
+    Route::get('students/{sno}', function($sno) {
+            return '學號:'. $no;
+    });
+   
+    Route::get('students/{sno}/score/{subj?}',
+        function($sno, $subj=null) {
+            return '學號:'. $no . '的'. ((is_null($subj) ? '所有科目' : $subj) . '成績';
+        }
+    );
+
 ## 路由群組
 
 ## 路由命名
